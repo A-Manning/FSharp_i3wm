@@ -35,29 +35,63 @@ let focusedNameHasSuffix (suffix: string): Tree.T -> bool =
     >> function | Some true -> true
                 | _ -> false
 
-focusOutput "HDMI-A-0";
+//focusOutput "HDMI-A-0"
+workspace "1"
+waitUntil ^ focusedNameHasPrefix "1"
+// workspace 1 | workspace 3
+(* *[]* | [] *)
 exec "gnome-terminal --execute cmus"
 waitUntil ^ focusedNameHasPrefix "cmus"
-split "vertical"
+split "vertical" 
+(* [*cmus*] | [] *)
 exec "telegram"
 waitUntil ^ focusedNameHasPrefix "Telegram"
+(* [cmus      ] | ⌈⌉
+   [*Telegram*] | ⌊⌋ *)
 split "horizontal"
 layout "tabbed"
 exec "qbittorrent"
 waitUntil ^ focusedNameHasPrefix "qBittorrent"
+(* [cmus                  ] | ⌈⌉
+   [Telegram|*qBittorrent*] | ⌊⌋ *)
 focus "left"
 waitUntil ^ focusedNameHasPrefix "Telegram"
+(* [cmus                  ] | ⌈⌉
+   [*Telegram*|qBittorrent] | ⌊⌋ *)
 focus "up"
 waitUntil ^ focusedNameHasPrefix "cmus"
+(* [*cmus              *] | ⌈⌉
+   [Telegram|qBittorrent] | ⌊⌋ *)
 split "horizontal"
 layout "tabbed"
 focus "parent"
+(* *[cmus                ]* | ⌈⌉
+    [Telegram|qBittorrent]  | ⌊⌋ *)
 focus "parent"
 waitUntil ^ focusedNameHasPrefix "1"
+(* *[cmus                ]* | ⌈⌉
+   *[Telegram|qBittorrent]* | ⌊⌋ *)
 split "horizontal"
 exec "chromium-browser"
 waitUntil ^ focusedNameHasSuffix "Chromium"
+(* [cmus                ]⌈*Chromium*⌉ | ⌈⌉
+   [Telegram|qBittorrent]⌊ 	      ⌋ | ⌊⌋ *)
 split "horizontal"
 layout "tabbed"
-
-//getTree() |> getFocusedName |> Option.iter(printfn "%s")
+workspace "3"
+waitUntil ^ focusedNameHasPrefix "3"
+(* [cmus                ]⌈Chromium⌉ | *⌈⌉*
+   [Telegram|qBittorrent]⌊ 	    ⌋ | *⌊⌋* *)
+exec "gnome-terminal"
+waitUntil ^ focusedNameHasPrefix "Terminal"
+(* [cmus                ]⌈Chromium⌉ | ⌈*Terminal*⌉
+   [Telegram|qBittorrent]⌊ 	    ⌋ | ⌊          ⌋ *)
+focus "parent"
+waitUntil ^ (not << focusedNameHasPrefix "Terminal")
+(* [cmus                ]⌈Chromium⌉ | *⌈Terminal⌉*
+   [Telegram|qBittorrent]⌊ 	    ⌋ |  ⌊        ⌋ *)
+exec "gnome-terminal"
+waitUntil ^ focusedNameHasPrefix "Terminal"
+layout "tabbed"
+(* [cmus                ]⌈Chromium⌉ | ⌈Terminal|*Terminal*⌉
+   [Telegram|qBittorrent]⌊ 	    ⌋ | ⌊        |          ⌋ *)

@@ -5,7 +5,7 @@ open FSharpx.Functional.Prelude
 open System.Diagnostics
 module Tree = FSharp_i3wm.Tree
 
-let private send (s: string): string =
+let private send' (s: string): string =
     use p = new Process()
     p.StartInfo.FileName <- "i3-msg";
     p.StartInfo.Arguments <- s
@@ -23,20 +23,22 @@ let private send (s: string): string =
             + sprintf "\nStandard Output:\n`%s`" stdOut
             + sprintf "\nStandard Error:\n`%s`"  stdErr
 
-let getTree():  Tree.T = send "-t get_tree"
+let private send: string -> unit = send' >> ignore
+
+let getTree():  Tree.T = send' "-t get_tree"
                          |> Tree.parseTree
                          
 let exec: string -> unit =
-    sprintf "\"exec %s\"" >> send >> ignore
+    sprintf "\"exec %s\"" >> send
 
 let execNoStartupId: string -> unit =
-    sprintf "\"exec --no-startup-id %s\"" >> send >> ignore
+    sprintf "\"exec --no-startup-id %s\"" >> send
 
 let split (s: string): unit =
     match s with
     | "vertical"
     | "horizontal"
-    | "toggle" -> send ("split " + s) |> ignore
+    | "toggle" -> send ^ "split " + s
     | s -> failwithf "not a valid argument to `split`: `%s`" s
 
 let layout (s: string): unit =
@@ -45,11 +47,11 @@ let layout (s: string): unit =
     | "tabbed"
     | "stacking"
     | "splitv"
-    | "splith" -> send ("layout " + s) |> ignore
+    | "splith" -> send ^ "layout " + s
     | s -> failwithf "not a valid argument to `layout`: `%s`" s
 
-let layoutToggleSplit = send "layout toggle split" |> ignore
-let layoutToggleAll = send "layout toggle all" |> ignore
+let layoutToggleSplit = send "layout toggle split"
+let layoutToggleAll = send "layout toggle all"
 
 let layoutToggle (args: list<string>): unit =
     let checkArg: string -> unit = function
@@ -63,7 +65,6 @@ let layoutToggle (args: list<string>): unit =
          |> String.concat " "
          |> sprintf "layout toggle %s"
          |> send
-         |> ignore
 
 let focus (s: string): unit =
     match s with
@@ -75,8 +76,14 @@ let focus (s: string): unit =
     | "child"
     | "floating"
     | "tiling"
-    | "mode_toggle" -> send ("focus " + s) |> ignore
+    | "mode_toggle" -> send ^ "focus " + s
     | _ -> failwithf "not a valid argument to `focus`: `%s`" s
 
 let focusOutput: string -> unit =
-    sprintf "focus output %s" >> send >> ignore 
+    sprintf "focus output %s" >> send
+    
+let workspace: string -> unit =
+    sprintf "\"workspace %s\"" >> send
+
+let workspaceNoAutoBackAndForth: string -> unit =
+    sprintf "\"workspace --no-auto-back-and-forth %s\"" >> send
