@@ -43,9 +43,9 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Prelude.fs" />
     <Compile Include="FSharp_i3wm.fs" />
-    <Compile Include="Message.fs" />
     <Compile Include="Node.fs" />
     <Compile Include="Tree.fs" />
+    <Compile Include="Message.fs" />
     <None Include="Script.fsx" />
   </ItemGroup>
   <ItemGroup>

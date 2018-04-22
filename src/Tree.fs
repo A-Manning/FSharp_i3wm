@@ -10,6 +10,9 @@ open FSharp.Data.JsonExtensions
 module RT = FSharpx.Collections.Experimental.EagerRoseTree
 module Node = FSharp_i3wm.Node
 
+type private RoseTree<'A> = 
+    FSharpx.Collections.Experimental.RoseTree<'A>
+
 type T = {
     node: Node.T
     tiling_nodes: list<T>
@@ -56,11 +59,46 @@ type T with
     member this.focused(): bool             = focused this
     member this.focus(): array<int>         = getFocus this
 
+let rec mapTiling (f: Node.T -> 'A) (tree:Tree) : EagerRoseTree<'A> =
+    { Root = f tree.node
+      Children = tree.tiling_nodes |> List.map (mapTiling f) }
+
+let rec mapFloating (f: Node.T -> 'A) (tree:Tree) : EagerRoseTree<'A> =
+    { Root = f tree.node
+      Children = tree.floating_nodes |> List.map (mapFloating f) }
+
+let getChild (id: int) (tree:Tree) : option<Tree> =
+    if tree.id() = id then Some tree else
+    let tryFindID: list<Tree> -> option<Tree> =
+        List.tryFind(fun t -> t.id() = id)
+    tree |> duplicate
+         |> mapFst (getTilingNodes   >> tryFindID)
+         |> mapSnd (getFloatingNodes >> tryFindID)
+         |> function | Some t, _
+                     | _, Some t -> Some t
+                     | _ -> None
+
+let rec getFocused (tree:Tree) : option<Tree> =
+    if tree.focused() then Some tree else
+    Array.tryHead (tree.focus())
+    >>= (fun id -> getChild id tree)
+    >>= getFocused
+
+type T with 
+    member this.getChild(id: int): option<Tree> = getChild id this
+    member this.getFocused(): option<Tree> = getFocused this
+
+(***********)
+(* Parsing *)
+(***********)
+
 let parseJsonRect (rect:JsonValue) : Rect =
-    { x = rect?x.AsInteger()
-      y = rect?y.AsInteger()
-      width = rect?width.AsInteger()
-      height = rect?height.AsInteger() }
+    try 
+        { x = rect?x.AsInteger64()
+          y = rect?y.AsInteger64()
+          width = rect?width.AsInteger64()
+          height = rect?height.AsInteger64() }
+    with _ -> failwithf "%A" rect 
 
 let toContainer : string -> Container = function
     | "root" -> RootContainer
@@ -129,34 +167,3 @@ let rec private parseJsonTree (jsonTree : JsonValue) : Tree =
 
 let parseTree : string -> Tree =
     JsonValue.Parse >> parseJsonTree
-
-type private RoseTree<'A> = FSharpx.Collections.Experimental.RoseTree<'A>
-
-let rec mapTiling (f: Node.T -> 'A) (tree:Tree) : EagerRoseTree<'A> =
-    { Root = f tree.node
-      Children = tree.floating_nodes |> List.map (mapTiling f) }
-
-let rec mapFloating (f: Node.T -> 'A) (tree:Tree) : EagerRoseTree<'A> =
-    { Root = f tree.node
-      Children = tree.floating_nodes |> List.map (mapFloating f) }
-
-let getChild (id: int) (tree:Tree) : option<Tree> =
-    if tree.id() = id then Some tree else
-    let tryFindID: list<Tree> -> option<Tree> =
-        List.tryFind(fun t -> t.id() = id)
-    tree |> duplicate
-         |> mapFst (getTilingNodes   >> tryFindID)
-         |> mapSnd (getFloatingNodes >> tryFindID)
-         |> function | Some t, _
-                     | _, Some t -> Some t
-                     | _ -> None
-
-type T with member this.getChild(id: int): option<Tree> = getChild id this
-
-let rec getFocused (tree:Tree) : option<Tree> =
-    if tree.focused() then Some tree else
-    Array.tryHead (tree.focus())
-    >>= tree.getChild
-    >>= getFocused
-
-type T with member this.getFocused(): option<Tree> = getFocused this

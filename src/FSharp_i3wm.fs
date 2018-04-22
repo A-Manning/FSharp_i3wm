@@ -8,10 +8,10 @@ open FSharp.Data
 //open FSharp.Data.JsonExtensions
 
 type Rect = {
-    x : int
-    y : int
-    width : int
-    height : int
+    x : int64
+    y : int64
+    width : int64
+    height : int64
 }
 
 type Response = {
