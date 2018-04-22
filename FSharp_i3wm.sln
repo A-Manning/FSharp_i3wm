@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{60068991-5EBC-423A-B085-B9466716F772}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+	EndProjectSection
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp_i3wm", "src\FSharp_i3wm.fsproj", "{B366CF64-CEB2-448D-9368-AE24E922BAD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B366CF64-CEB2-448D-9368-AE24E922BAD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B366CF64-CEB2-448D-9368-AE24E922BAD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B366CF64-CEB2-448D-9368-AE24E922BAD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B366CF64-CEB2-448D-9368-AE24E922BAD1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

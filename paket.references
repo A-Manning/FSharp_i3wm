@@ -1,0 +1,4 @@
+FSharp.Core
+FSharp.Compiler.Tools
+System.ValueTuple
+FSharpx.Extras

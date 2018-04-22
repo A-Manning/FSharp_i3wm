@@ -1,7 +1,18 @@
 NUGET
   remote: https://www.nuget.org/api/v2
     FSharp.Compiler.Tools (10.0.1) - restriction: >= net45
+    FSharp.Control.AsyncSeq (2.0.21)
+      FSharp.Core (>= 3.1.2) - restriction: >= net45
+      FSharp.Core (>= 4.3.2) - restriction: && (< net45) (>= netstandard2.0)
     FSharp.Core (4.3.4) - restriction: >= net45
+    FSharpx.Async (1.13.2)
+      FSharp.Control.AsyncSeq
+      FSharp.Core
+    FSharpx.Collections (1.17)
+      FSharp.Core
+    FSharpx.Extras (2.2.1)
+      FSharpx.Async
+      FSharpx.Collections
     Microsoft.NETCore.Platforms (2.0.2) - restriction: || (&& (>= net45) (>= netcoreapp2.0) (< netstandard2.0)) (&& (>= net45) (< netstandard1.0)) (&& (>= net45) (< netstandard1.3)) (&& (>= net45) (< netstandard1.5) (>= uap10.0)) (&& (>= net45) (< portable-net45+win8+wpa81)) (&& (>= net45) (>= uap10.1)) (&& (>= net45) (>= wp8)) (&& (>= net46) (< netstandard1.4))
     Microsoft.Win32.Primitives (4.3) - restriction: || (&& (>= net45) (< netstandard1.5) (>= uap10.0)) (&& (>= net46) (< netstandard1.4))
     NETStandard.Library (2.0.2) - restriction: && (>= net45) (< net461) (< netstandard2.0)
