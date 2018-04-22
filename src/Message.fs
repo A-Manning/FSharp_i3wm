@@ -1,20 +1,22 @@
 module FSharp_i3wm.Message
 
-open System.Text
-module Command = FSharp_i3wm.Command
+open FSharp_i3wm.Prelude
+open FSharpx.Functional.Prelude
+open System.Diagnostics
 
-type private Message = byte[]
-type T = Message
-
-let private bytesOfInt : int -> byte[] =
-    System.BitConverter.GetBytes
-let private bytesOfString: string -> array<byte> = 
-    Encoding.ASCII.GetBytes
-
-let format (command: Command.T) (payload:string): Message =
-    let payload = bytesOfString payload
-    let payloadLength = bytesOfInt payload.Length
-    Array.concat [ "i3-ipc"B
-                   payloadLength
-                   Command.toBytes command
-                   payload ]
+let private send (s: string): string =
+    use p = new Process()
+    p.StartInfo.FileName <- "i3-msg";
+    p.StartInfo.Arguments <- s
+    p.StartInfo.UseShellExecute <- false;
+    p.StartInfo.RedirectStandardOutput <- true;
+    ignore <| p.Start()
+    p.WaitForExit();
+    let exitcode = p.ExitCode
+    let stdOut = p.StandardOutput.ReadToEnd().Trim()
+    let stdErr = p.StandardError .ReadToEnd().Trim()
+    if exitcode = 0 then stdOut
+    else failwith ^
+            sprintf "`i3-msg %s` returned error code `%d`." s exitcode
+            + sprintf "\nStandard Output:\n`%s`" stdOut
+            + sprintf "\nStandard Error:\n`%s`"  stdErr

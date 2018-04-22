@@ -3,3 +3,5 @@ nuget FSharp.Compiler.Tools >= 4.1.27 restriction: >= net45
 nuget FSharp.Core >= 4.1.18 restriction: >= net45
 nuget System.ValueTuple >= 4.3.0 restriction: >= net45
 nuget FSharpx.Extras
+nuget FSharpx.Collections.Experimental
+nuget FSharp.Data
