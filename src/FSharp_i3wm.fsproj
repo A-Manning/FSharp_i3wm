@@ -43,6 +43,11 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Prelude.fs" />
     <Compile Include="FSharp_i3wm.fs" />
+    <Compile Include="BorderStyle.fs" />
+    <Compile Include="Container.fs" />
+    <Compile Include="Layout.fs" />
+    <Compile Include="Orientation.fs" />
+    <Compile Include="Rect.fs" />
     <Compile Include="Node.fs" />
     <Compile Include="Tree.fs" />
     <Compile Include="Message.fs" />

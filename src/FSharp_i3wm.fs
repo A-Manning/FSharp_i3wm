@@ -5,64 +5,14 @@ open System.Diagnostics
 open System.Text
 open System.Net.Sockets
 open FSharp.Data
-//open FSharp.Data.JsonExtensions
-
-type Rect = {
-    x : int64
-    y : int64
-    width : int64
-    height : int64
-}
 
 type Response = {
     success : bool
     error : option<string>
 }
 
-type Output = {
-    name : string
-    active : bool
-    primary : bool
-    current_workspace : string
-    rect : Rect
-}
-
-type Container =
-    | RootContainer
-    | OutputContainer
-    | Container
-    | FloatingContainer
-    | WorkspaceContainer
-    | DockAreaContainer
-
-type BorderStyle =
-    | Normal
-    | NoBorderStyle
-    | Pixel
-
-type Orientation =
-    | Horizontal
-    | Vertical
-    | NoOrientation
-
-type Layout =
-    | Splith
-    | Splitv
-    | Stacked
-    | Tabbed
-    | DockArea
-    | Output
-
 type MarksResponse = string[]
-
 (*
-
-let parseRect (rect:JsonValue) : Rect =
-    { x = rect?x.AsInteger()
-      y = rect?y.AsInteger()
-      width = rect?width.AsInteger()
-      height = rect?height.AsInteger() }
-
 let toContainer : string -> Container = function
     | "root" -> RootContainer
     | "output" -> OutputContainer

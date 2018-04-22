@@ -26,7 +26,7 @@ let private send' (s: string): string =
 let private send: string -> unit = send' >> ignore
 
 let getTree():  Tree.T = send' "-t get_tree"
-                         |> Tree.parseTree
+                         |> Tree.parse
                          
 let exec: string -> unit =
     sprintf "\"exec %s\"" >> send
