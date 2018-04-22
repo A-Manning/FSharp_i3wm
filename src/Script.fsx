@@ -35,6 +35,17 @@ let focusedNameHasSuffix (suffix: string): Tree.T -> bool =
     >> function | Some true -> true
                 | _ -> false
 
+let smartSplith: unit -> unit =
+   getTree >> Tree.getLayout >> function | Splith -> ()
+                                         | _      -> layout "splith"
+let smartSplitv: unit -> unit =
+   getTree >> Tree.getLayout >> function | Splitv -> ()
+                                         | _      -> layout "splitv"
+let smartSplitTabbed: unit -> unit =
+   getTree >> Tree.getLayout >> function | Tabbed -> ()
+                                         | _      -> layout "tabbed"
+
+(*
 //focusOutput "HDMI-A-0"
 workspace "1"
 waitUntil ^ focusedNameHasPrefix "1"
@@ -95,3 +106,5 @@ waitUntil ^ focusedNameHasPrefix "Terminal"
 layout "tabbed"
 (* [cmus                ]⌈Chromium⌉ | ⌈Terminal|*Terminal*⌉
    [Telegram|qBittorrent]⌊ 	    ⌋ | ⌊        |          ⌋ *)
+
+*)
