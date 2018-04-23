@@ -4,3 +4,4 @@ obj
 packages
 .paket/paket.targets
 .paket/load/
+nugets/

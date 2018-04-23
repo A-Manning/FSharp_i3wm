@@ -1,0 +1,7 @@
+type project
+id FSharp_i3wm
+version 0.1
+authors A Manning
+description
+  A library to control i3wm from F#, through i3-msg
+

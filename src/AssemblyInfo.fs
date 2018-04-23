@@ -8,7 +8,7 @@ open System.Runtime.InteropServices
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [<assembly: AssemblyTitle("FSharp_i3wm")>]
-[<assembly: AssemblyDescription("")>]
+[<assembly: AssemblyDescription("A library to control i3wm from F#, through i3-msg")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]
 [<assembly: AssemblyProduct("FSharp_i3wm")>]
