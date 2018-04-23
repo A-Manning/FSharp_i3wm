@@ -38,7 +38,7 @@ let split (s: string): unit =
     match s with
     | "vertical"
     | "horizontal"
-    | "toggle" -> send ^ "split " + s
+    | "toggle" -> send ^ sprintf "split %s" s
     | s -> failwithf "not a valid argument to `split`: `%s`" s
 
 let layout (s: string): unit =
@@ -47,7 +47,7 @@ let layout (s: string): unit =
     | "tabbed"
     | "stacking"
     | "splitv"
-    | "splith" -> send ^ "layout " + s
+    | "splith" -> send ^ sprintf "layout %s" s
     | s -> failwithf "not a valid argument to `layout`: `%s`" s
 
 let layoutToggleSplit(): unit = send "layout toggle split"
@@ -76,7 +76,7 @@ let focus (s: string): unit =
     | "child"
     | "floating"
     | "tiling"
-    | "mode_toggle" -> send ^ "focus " + s
+    | "mode_toggle" -> send ^ sprintf "focus %s" s
     | _ -> failwithf "not a valid argument to `focus`: `%s`" s
 
 let focusOutput: string -> unit =
