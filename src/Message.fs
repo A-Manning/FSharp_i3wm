@@ -50,8 +50,8 @@ let layout (s: string): unit =
     | "splith" -> send ^ "layout " + s
     | s -> failwithf "not a valid argument to `layout`: `%s`" s
 
-let layoutToggleSplit = send "layout toggle split"
-let layoutToggleAll = send "layout toggle all"
+let layoutToggleSplit(): unit = send "layout toggle split"
+let layoutToggleAll(): unit = send "layout toggle all"
 
 let layoutToggle (args: list<string>): unit =
     let checkArg: string -> unit = function

@@ -16,6 +16,7 @@
 #load "Tree.fs"
 #load "Message.fs"
 
+
 open FSharpx.Functional.Prelude
 open FSharp_i3wm
 open FSharp_i3wm.Message
@@ -40,81 +41,74 @@ let focusedNameHasSuffix (suffix: string): Tree.T -> bool =
     >> Option.map ^ String.endsWith suffix
     >> Option.getOrElse false
 
-let smartSplith _ : unit =
-   getTree() |> Tree.getLayout 
-             |> function | Layout.Splith -> ()
-                         | _      -> layout "splith"
-(*
-let smartSplitv(): unit =
-   getTree >> Tree.getLayout 
-           >> begin function | Layout.Splitv -> ()
-                             | _      -> layout "splitv"
-              end
-let smartSplitTabbed(): unit =
-   getTree >> Tree.getLayout 
-           >> begin function | Layout.Tabbed -> ()
-                             | _      -> layout "tabbed"
-             end
-*)
+let smartSplith: unit -> unit = getTree >> Tree.getLayout 
+                                        >> function | Layout.Splith -> ()
+                                                    | _ -> layout "splith"
+let smartSplitv: unit -> unit = getTree >> Tree.getLayout 
+                                        >> function | Layout.Splitv -> ()
+                                                    | _ -> layout "splitv"
+let smartSplitTabbed: unit -> unit = getTree >> Tree.getLayout 
+                                             >> function | Layout.Tabbed -> ()
+                                                         | _ -> layout "tabbed"
 
-//focusOutput "HDMI-A-0"
-//workspace "1"
-//waitUntil ^ focusedNameHasPrefix "1"
-// workspace 1 | workspace 3
+focusOutput "HDMI-A-0"
+workspace "1"
+waitUntil ^ focusedNameHasPrefix "1"
+workspace 1 | workspace 2
 (* *[]* | [] *)
-//exec "gnome-terminal --execute cmus"
-//waitUntil ^ focusedNameHasPrefix "cmus"
-//split "vertical" 
+exec "gnome-terminal --execute cmus"
+waitUntil ^ focusedNameHasPrefix "cmus"
+split "vertical" 
 (* [*cmus*] | [] *)
-//exec "telegram"
-//waitUntil ^ focusedNameHasPrefix "Telegram"
+exec "telegram"
+waitUntil ^ focusedNameHasPrefix "Telegram"
 (* [cmus      ] | ⌈⌉
    [*Telegram*] | ⌊⌋ *)
-//split "horizontal"
-//layout "tabbed"
-//exec "qbittorrent"
-//waitUntil ^ focusedNameHasPrefix "qBittorrent"
+split "horizontal"
+layout "tabbed"
+exec "qbittorrent"
+waitUntil ^ focusedNameHasPrefix "qBittorrent"
 (* [cmus                  ] | ⌈⌉
    [Telegram|*qBittorrent*] | ⌊⌋ *)
-//focus "left"
-//waitUntil ^ focusedNameHasPrefix "Telegram"
+focus "left"
+waitUntil ^ focusedNameHasPrefix "Telegram"
 (* [cmus                  ] | ⌈⌉
    [*Telegram*|qBittorrent] | ⌊⌋ *)
-//focus "up"
-//waitUntil ^ focusedNameHasPrefix "cmus"
+focus "up"
+waitUntil ^ focusedNameHasPrefix "cmus"
 (* [*cmus              *] | ⌈⌉
    [Telegram|qBittorrent] | ⌊⌋ *)
-//split "horizontal"
-//layout "tabbed"
-//focus "parent"
+split "horizontal"
+layout "tabbed"
+focus "parent"
 (* *[cmus                ]* | ⌈⌉
     [Telegram|qBittorrent]  | ⌊⌋ *)
-//focus "parent"
-//waitUntil ^ focusedNameHasPrefix "1"
+focus "parent"
+waitUntil ^ focusedNameHasPrefix "1"
 (* *[cmus                ]* | ⌈⌉
    *[Telegram|qBittorrent]* | ⌊⌋ *)
-//split "horizontal"
-//exec "chromium-browser"
-//waitUntil ^ focusedNameHasSuffix "Chromium"
+split "horizontal"
+exec "chromium-browser"
+waitUntil ^ focusedNameHasSuffix "Chromium"
 (* [cmus                ]⌈*Chromium*⌉ | ⌈⌉
    [Telegram|qBittorrent]⌊ 	      ⌋ | ⌊⌋ *)
-//split "horizontal"
-//layout "tabbed"
-//workspace "3"
-//waitUntil ^ focusedNameHasPrefix "3"
+split "horizontal"
+layout "tabbed"
+workspace "2"
+waitUntil ^ focusedNameHasPrefix "2"
 (* [cmus                ]⌈Chromium⌉ | *⌈⌉*
    [Telegram|qBittorrent]⌊ 	    ⌋ | *⌊⌋* *)
-//exec "gnome-terminal"
-//waitUntil ^ focusedNameHasPrefix "Terminal"
+exec "gnome-terminal"
+waitUntil ^ focusedNameHasPrefix "Terminal"
 (* [cmus                ]⌈Chromium⌉ | ⌈*Terminal*⌉
    [Telegram|qBittorrent]⌊ 	    ⌋ | ⌊          ⌋ *)
-//focus "parent"
-//waitUntil ^ (not << focusedNameHasPrefix "Terminal")
+focus "parent"
+waitUntil ^ (not << focusedNameHasPrefix "Terminal")
 (* [cmus                ]⌈Chromium⌉ | *⌈Terminal⌉*
    [Telegram|qBittorrent]⌊ 	    ⌋ |  ⌊        ⌋ *)
-//exec "gnome-terminal"
-//waitUntil ^ focusedNameHasPrefix "Terminal"
-//layout "tabbed"
+exec "gnome-terminal"
+waitUntil ^ focusedNameHasPrefix "Terminal"
+layout "tabbed"
 (* [cmus                ]⌈Chromium⌉ | ⌈Terminal|*Terminal*⌉
    [Telegram|qBittorrent]⌊ 	    ⌋ | ⌊        |          ⌋ *)
 
