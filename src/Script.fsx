@@ -54,7 +54,7 @@ let smartSplitTabbed: unit -> unit = getTree >> Tree.getLayout
 focusOutput "HDMI-A-0"
 workspace "1"
 waitUntil ^ focusedNameHasPrefix "1"
-workspace 1 | workspace 2
+// workspace 1 | workspace 2
 (* *[]* | [] *)
 exec "gnome-terminal --execute cmus"
 waitUntil ^ focusedNameHasPrefix "cmus"
