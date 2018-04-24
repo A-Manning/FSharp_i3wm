@@ -81,24 +81,24 @@ split "horizontal"
 exec "chromium-browser"
 waitUntil ^ focusedNameHasSuffix "Chromium"
 (* [cmus                ]⌈*Chromium*⌉ | ⌈⌉
-   [Telegram|qBittorrent]⌊ 	        ⌋ | ⌊⌋ *)
+   [Telegram|qBittorrent]⌊          ⌋ | ⌊⌋ *)
 split "horizontal"
 layout "tabbed"
 workspace "2"
 waitUntil ^ focusedNameHasPrefix "2"
 (* [cmus                ]⌈Chromium⌉ | *⌈⌉*
-   [Telegram|qBittorrent]⌊ 	      ⌋ | *⌊⌋* *)
+   [Telegram|qBittorrent]⌊        ⌋ | *⌊⌋* *)
 exec "gnome-terminal"
 waitUntil ^ focusedNameHasPrefix "Terminal"
 (* [cmus                ]⌈Chromium⌉ | ⌈*Terminal*⌉
-   [Telegram|qBittorrent]⌊ 	      ⌋ | ⌊          ⌋ *)
+   [Telegram|qBittorrent]⌊        ⌋ | ⌊          ⌋ *)
 focus "parent"
 waitUntil ^ (not << focusedNameHasPrefix "Terminal")
 (* [cmus                ]⌈Chromium⌉ | *⌈Terminal⌉*
-   [Telegram|qBittorrent]⌊ 	      ⌋ |  ⌊        ⌋ *)
+   [Telegram|qBittorrent]⌊        ⌋ |  ⌊        ⌋ *)
 exec "gnome-terminal"
 waitUntil ^ focusedNameHasPrefix "Terminal"
 layout "tabbed"
 (* [cmus                ]⌈Chromium⌉ | ⌈Terminal|*Terminal*⌉
-   [Telegram|qBittorrent]⌊ 	    ⌋ | ⌊          |          ⌋ *)
+   [Telegram|qBittorrent]⌊        ⌋ | ⌊        |          ⌋ *)
 
