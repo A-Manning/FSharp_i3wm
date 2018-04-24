@@ -11,3 +11,8 @@ let parse: string -> Orientation = function
     | "vertical" -> Vertical
     | "none" -> NoOrientation
     | _ -> failwith "Not an orientation"
+
+let toString: Orientation -> string = function
+    | Horizontal -> "horizontal"
+    | Vertical -> "vertical"
+    | NoOrientation -> "none"

@@ -17,3 +17,11 @@ let parse: string -> Layout = function
     | "dockarea" -> DockArea
     | "output" -> Output
     | _ -> failwith "Not a layout"
+    
+let toString: Layout -> string = function
+    | Splith -> "splith"
+    | Splitv -> "splitv"
+    | Stacked -> "stacked"
+    | Tabbed -> "tabbed"
+    | DockArea -> "dockarea"
+    | Output -> "output"

@@ -87,6 +87,15 @@ let rec getFocused (tree:Tree) : option<Tree> =
     >>= tree.getChild
     >>= getFocused
 
+let rec getWorkspaces (tree: Tree): list<Tree> =
+    begin match tree.typ() with
+    | Container.WorkspaceContainer -> [tree]
+    | _ -> []
+    end
+    @ List.collect getWorkspaces tree.tiling_nodes
+    @ List.collect getWorkspaces tree.floating_nodes
+    
+
 type T with
     member this.getFocused(): option<Tree> = getFocused this
 
