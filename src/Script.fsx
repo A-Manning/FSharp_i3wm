@@ -41,20 +41,10 @@ let focusedNameHasSuffix (suffix: string): Tree.T -> bool =
     >> Option.map ^ String.endsWith suffix
     >> Option.getOrElse false
 
-let smartSplith: unit -> unit = getTree >> Tree.getLayout 
-                                        >> function | Layout.Splith -> ()
-                                                    | _ -> layout "splith"
-let smartSplitv: unit -> unit = getTree >> Tree.getLayout 
-                                        >> function | Layout.Splitv -> ()
-                                                    | _ -> layout "splitv"
-let smartSplitTabbed: unit -> unit = getTree >> Tree.getLayout 
-                                             >> function | Layout.Tabbed -> ()
-                                                         | _ -> layout "tabbed"
-
 focusOutput "HDMI-A-0"
 workspace "1"
 waitUntil ^ focusedNameHasPrefix "1"
-workspace 1 | workspace 2
+// workspace 1 | workspace 2
 (* *[]* | [] *)
 exec "gnome-terminal --execute cmus"
 waitUntil ^ focusedNameHasPrefix "cmus"
@@ -91,24 +81,24 @@ split "horizontal"
 exec "chromium-browser"
 waitUntil ^ focusedNameHasSuffix "Chromium"
 (* [cmus                ]⌈*Chromium*⌉ | ⌈⌉
-   [Telegram|qBittorrent]⌊ 	      ⌋ | ⌊⌋ *)
+   [Telegram|qBittorrent]⌊ 	        ⌋ | ⌊⌋ *)
 split "horizontal"
 layout "tabbed"
 workspace "2"
 waitUntil ^ focusedNameHasPrefix "2"
 (* [cmus                ]⌈Chromium⌉ | *⌈⌉*
-   [Telegram|qBittorrent]⌊ 	    ⌋ | *⌊⌋* *)
+   [Telegram|qBittorrent]⌊ 	      ⌋ | *⌊⌋* *)
 exec "gnome-terminal"
 waitUntil ^ focusedNameHasPrefix "Terminal"
 (* [cmus                ]⌈Chromium⌉ | ⌈*Terminal*⌉
-   [Telegram|qBittorrent]⌊ 	    ⌋ | ⌊          ⌋ *)
+   [Telegram|qBittorrent]⌊ 	      ⌋ | ⌊          ⌋ *)
 focus "parent"
 waitUntil ^ (not << focusedNameHasPrefix "Terminal")
 (* [cmus                ]⌈Chromium⌉ | *⌈Terminal⌉*
-   [Telegram|qBittorrent]⌊ 	    ⌋ |  ⌊        ⌋ *)
+   [Telegram|qBittorrent]⌊ 	      ⌋ |  ⌊        ⌋ *)
 exec "gnome-terminal"
 waitUntil ^ focusedNameHasPrefix "Terminal"
 layout "tabbed"
 (* [cmus                ]⌈Chromium⌉ | ⌈Terminal|*Terminal*⌉
-   [Telegram|qBittorrent]⌊ 	    ⌋ | ⌊        |          ⌋ *)
+   [Telegram|qBittorrent]⌊ 	    ⌋ | ⌊          |          ⌋ *)
 
