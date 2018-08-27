@@ -10,7 +10,7 @@ module Orientation = FSharp_i3wm.Orientation
 module Rect        = FSharp_i3wm.Rect
 
 type T = {
-    id                  : int
+    id                  : int64
     name                : string
     typ                 : Container.T
     border              : BorderStyle.T
@@ -25,11 +25,11 @@ type T = {
     window              : option<int>
     urgent              : bool
     focused             : bool
-    focus               : array<int>
+    focus               : array<int64>
 }
 type Node = T
 
-let getId                 (node: Node): int           = node.id
+let getId                 (node: Node): int64         = node.id
 let getName               (node: Node): string        = node.name
 let getType               (node: Node): Container.T   = node.typ
 let getBorder             (node: Node): BorderStyle.T = node.border
@@ -44,30 +44,50 @@ let getGeometry           (node: Node): Rect.T        = node.geometry
 let getWindow             (node: Node): option<int>   = node.window
 let urgent                (node: Node): bool          = node.urgent
 let focused               (node: Node): bool          = node.focused
-let getFocus              (node: Node): array<int>    = node.focus
-
+let getFocus              (node: Node): array<int64>  = node.focus
+    
 let parseJson (tree: JsonValue): Node =
     {
-        id = tree?id.AsInteger()
-        name = tree?name.AsString()
-        typ = tree.GetProperty("type").AsString() |> Container.parse
-        border = tree?border.AsString() |> BorderStyle.parse
-        current_border_width = tree?current_border_width.AsInteger() 
-        layout = tree?layout.AsString() |> Layout.parse
-        orientation = tree?orientation.AsString() |> Orientation.parse
-        percent = 
-            let percent = tree?percent
-            if percent = JsonValue.Null then None else
-            Some (percent.AsFloat())
-        rect        = tree?rect        |> Rect.parseJson
-        window_rect = tree?window_rect |> Rect.parseJson 
-        deco_rect   = tree?deco_rect   |> Rect.parseJson 
-        geometry    = tree?geometry    |> Rect.parseJson 
-        window =
-            let window = tree?window
-            if window = JsonValue.Null then None else
-            Some (window.AsInteger())
-        urgent = tree?urgent.AsBoolean()
-        focused = tree?focused.AsBoolean()
-        focus = tree?focus.AsArray() |> Array.map (fun focus -> focus.AsInteger())
+        id = try tree?id.AsInteger64() 
+             with _ -> failwith "Failed to parse id"
+        name = try tree?name.AsString()
+               with _ -> failwith "Failed to parse name"
+        typ = try tree.GetProperty("type").AsString() 
+                  |> Container.parse 
+              with _ -> failwith "Failed to parse typ"
+        border = try tree?border.AsString() 
+                     |> BorderStyle.parse
+                 with _ -> failwith "Failed to parse border"
+        current_border_width =
+            try tree?current_border_width.AsInteger() 
+            with _ -> failwith "Failed to parse current_border_width"
+        layout = try tree?layout.AsString() 
+                     |> Layout.parse
+                 with _ -> failwith "Failed to parse layout"
+        orientation = try tree?orientation.AsString() 
+                          |> Orientation.parse
+                      with _ -> failwith "Failed to parse orientation"
+        percent =  try let percent = tree?percent
+                       if percent = JsonValue.Null then None else
+                       Some (percent.AsFloat())
+                   with _ -> failwith "Failed to parse percent"
+        rect        = try tree?rect        |> Rect.parseJson
+                      with _ -> failwith "Failed to parse rect"
+        window_rect = try tree?window_rect |> Rect.parseJson 
+                      with _ -> failwith "Failed to parse window_rect"
+        deco_rect   = try tree?deco_rect   |> Rect.parseJson
+                      with _ -> failwith "Failed to parse deco_rect"
+        geometry    = try tree?geometry    |> Rect.parseJson
+                      with _ -> failwith "Failed to parse geometry"
+        window = try let window = tree?window
+                     if window = JsonValue.Null then None else
+                     Some (window.AsInteger())
+                 with _ -> failwith "Failed to parse window"
+        urgent = try tree?urgent.AsBoolean()
+                 with _ -> failwith "Failed to parse urgent"
+        focused = try tree?focused.AsBoolean()
+                  with _ -> failwith "Failed to parse focused"
+        focus = try tree?focus.AsArray() 
+                    |> Array.map (fun focus -> focus.AsInteger64())
+                with _ -> failwith "Failed to parse focus"
     }

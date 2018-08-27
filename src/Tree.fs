@@ -25,7 +25,7 @@ let getNode (tree: Tree): Node.T = tree.node
 let getTilingNodes (tree: Tree) = tree.tiling_nodes
 let getFloatingNodes (tree: Tree) = tree.floating_nodes
 
-let getId: Tree -> int                    = getNode >> Node.getId
+let getId: Tree -> int64                  = getNode >> Node.getId
 let getName: Tree -> string               = getNode >> Node.getName
 let getType: Tree -> Container.T          = getNode >> Node.getType
 let getBorder: Tree -> BorderStyle.T      = getNode >> Node.getBorder
@@ -40,10 +40,10 @@ let getGeometry: Tree -> Rect.T           = getNode >> Node.getGeometry
 let getWindow: Tree -> option<int>        = getNode >> Node.getWindow
 let urgent: Tree -> bool                  = getNode >> Node.urgent
 let focused: Tree -> bool                 = getNode >> Node.focused
-let getFocus: Tree -> array<int>          = getNode >> Node.getFocus
+let getFocus: Tree -> array<int64>        = getNode >> Node.getFocus
 
 type T with
-    member this.id(): int = getId this
+    member this.id(): int64                  = getId this
     member this.name(): string               = getName this
     member this.typ(): Container.T           = getType this
     member this.border(): BorderStyle.T      = getBorder this
@@ -58,9 +58,9 @@ type T with
     member this.window(): option<int>        = getWindow this
     member this.urgent(): bool               = urgent this
     member this.focused(): bool              = focused this
-    member this.focus(): array<int>          = getFocus this
+    member this.focus(): array<int64>        = getFocus this
     
-    member this.getChild(id: int): option<Tree> =
+    member this.getChild(id: int64): option<Tree> =
         if this.id() = id then Some this else
         let tryFindID: list<Tree> -> option<Tree> =
             List.tryFind(fun t -> t.id() = id)
@@ -79,7 +79,7 @@ let rec mapFloating (f: Node.T -> 'A) (tree:Tree): EagerRoseTree<'A> =
     { Root = f tree.node
       Children = tree.floating_nodes |> List.map (mapFloating f) }
 
-let getChild (id: int) (tree:Tree): option<Tree> = tree.getChild(id)
+let getChild (id: int64) (tree:Tree): option<Tree> = tree.getChild(id)
 
 let rec getFocused (tree:Tree) : option<Tree> =
     if tree.focused() then Some tree else
